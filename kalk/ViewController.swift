@@ -105,9 +105,15 @@ class ViewController: UIViewController {
     
     // method to calculate the answer
     func evaluate() {
-        let res: MathParser = MathParser(string: expression)
-        mainOut.text = String(res.parse())
-        expression = ""
+        do {
+            let res: MathParser = MathParser(string: expression)
+            mainOut.text = try String(res.parse())
+            expression = ""
+        } catch MathError.err(let msg) {
+            expression = ""
+            mainOut.text = "\(msg)"
+            subOut.text = ""
+        } catch {}
     }
     
     
@@ -143,6 +149,7 @@ class ViewController: UIViewController {
             expression += "sin("
         } else {
             expression += "asin("
+            function = false
         }
         updateLabels()
         let impact = UIImpactFeedbackGenerator(style: .soft)
@@ -153,6 +160,7 @@ class ViewController: UIViewController {
             expression += "cos("
         } else {
             expression += "acos("
+            function = false
         }
         updateLabels()
         let impact = UIImpactFeedbackGenerator(style: .soft)
@@ -163,6 +171,7 @@ class ViewController: UIViewController {
             expression += "tan("
         } else {
             expression += "atan("
+            function = false
         }
         updateLabels()
         let impact = UIImpactFeedbackGenerator(style: .soft)

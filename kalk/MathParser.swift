@@ -181,11 +181,11 @@ class MathParser {
         return false
     }
 
-    func parse() -> Double {
+    func parse() throws -> Double {
         nextChar()
-        let x = parseExpression()
+        let x = try parseExpression()
         if pos < str.count {
-            fatalError("Unexpected: \(ch)")
+            throw MathError.err("Unexpected: \(ch)")
         }
         return x
     }
@@ -197,33 +197,33 @@ class MathParser {
     //        | functionName `(` expression `)` | functionName factor
     //        | factor `^` factor
 
-    func parseExpression() -> Double {
-        var x = parseTerm()
+    func parseExpression() throws -> Double {
+        var x = try parseTerm()
         while true {
-            if eat("+") { x += parseTerm() } // addition
-            else if eat("-") { x -= parseTerm() } // subtraction
+            if eat("+") { x += try parseTerm() } // addition
+            else if eat("-") { x -= try parseTerm() } // subtraction
             else { return x }
         }
     }
 
-    func parseTerm() -> Double {
-        var x = parseFactor()
+    func parseTerm() throws -> Double {
+        var x = try parseFactor()
         while true {
-            if eat("*") { x *= parseFactor() } // multiplication
-            else if eat("/") { x /= parseFactor() } // division
+            if eat("*") { x *= try parseFactor() } // multiplication
+            else if eat("/") { x /= try parseFactor() } // division
             else { return x }
         }
     }
 
-    func parseFactor() -> Double {
-        if eat("+") { return +parseFactor() } // unary plus
-        if eat("-") { return -parseFactor() } // unary minus
+    func parseFactor() throws -> Double {
+        if eat("+") { return try +parseFactor() } // unary plus
+        if eat("-") { return try -parseFactor() } // unary minus
 
         var x: Double
         let startPos = self.pos
         if eat("(") { // parentheses
-            x = parseExpression()
-            if !eat(")") { fatalError("Missing ')'") }
+            x = try parseExpression()
+            if !eat(")") { throw MathError.err("Missing ')'") }
         } else if (ch >= "0" && ch <= "9") || ch == "." { // numbers
             while (ch >= "0" && ch <= "9") || ch == "." { nextChar() }
             x = Double(str[str.index(str.startIndex, offsetBy: startPos)..<str.index(str.startIndex, offsetBy: self.pos)]) ?? 0
@@ -231,10 +231,10 @@ class MathParser {
             while ch >= "a" && ch <= "z" { nextChar() }
             let funcName = String(str[str.index(str.startIndex, offsetBy: startPos)..<str.index(str.startIndex, offsetBy: self.pos)])
             if eat("(") {
-                x = parseExpression()
-                if !eat(")") { fatalError("Missing ')' after argument to \(funcName)") }
+                x = try parseExpression()
+                if !eat(")") { throw MathError.err("Missing ')' after argument to \(funcName)") }
             } else {
-                x = parseFactor()
+                x = try parseFactor()
             }
             switch funcName {
             case "sqrt": x = Foundation.sqrt(x)
@@ -244,13 +244,13 @@ class MathParser {
             case "asin": x = Foundation.asin(x)
             case "acos": x = Foundation.acos(x)
             case "atan": x = Foundation.atan(x)
-            default: fatalError("Unknown function: \(funcName)")
+            default: throw MathError.err("Unknown function: \(funcName)")
             }
         } else {
-            fatalError("Unexpected: \(ch)")
+            throw MathError.err("Unexpected: \(ch)")
         }
 
-        if eat("^") { x = Foundation.pow(x, parseFactor()) } // exponentiation
+        if eat("^") { x = Foundation.pow(x, try parseFactor()) } // exponentiation
 
         return x
     }
