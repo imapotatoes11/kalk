@@ -10,6 +10,7 @@ import UIKit
 class ViewController: UIViewController {
     // TODONE: !!! shrink text as number gets bigger
     
+    // TODO: rework ui/ux esp. the colors
     // TODO: add ANS (equal swipe down or smth)
     // TODO: make it like add ANS if operator pressed first
     // TODO: change action to press release instead of press down
@@ -19,6 +20,7 @@ class ViewController: UIViewController {
     // TODO: 2f turn off once a button (any) is pressed
     // TODO: animate (esp. 2f color change)
     // TODO: potentially unbold the text
+    // TODO: maybe light mode??? but finish the 2f first
     
     var expression: String = "";
 
@@ -75,7 +77,8 @@ class ViewController: UIViewController {
             button4.setTitle("asin", for: button4.state)
             button5.setTitle("acos", for: button5.state)
             button6.setTitle("atan", for: button6.state)
-        } else {
+        }
+        if !function {
             button4.setTitle("sin", for: button4.state)
             button5.setTitle("cos", for: button5.state)
             button6.setTitle("tan", for: button6.state)

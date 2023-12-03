@@ -157,6 +157,11 @@ enum MathError: Error {
 
 
 class MathParser {
+    
+    func rounds(x: Double) -> Double {
+        return Double(round(10000000000 * x) / 10000000000)
+    }
+    
     var pos = -1
     var ch: Character = " "
     var str: String;
@@ -236,14 +241,17 @@ class MathParser {
             } else {
                 x = try parseFactor()
             }
+            let d2 = 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282/180
+            let d1 = 180/3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282
             switch funcName {
-            case "sqrt": x = Foundation.sqrt(x)
-            case "sin": x = Foundation.sin(x)
-            case "cos": x = Foundation.cos(x)
-            case "tan": x = Foundation.tan(x)
-            case "asin": x = Foundation.asin(x)
-            case "acos": x = Foundation.acos(x)
-            case "atan": x = Foundation.atan(x)
+                // rounding to avoid floating point errors
+            case "sqrt": x = rounds(x: Foundation.sqrt(x))
+            case "sin": x = rounds(x: Foundation.sin(x * d2))
+            case "cos": x = rounds(x: Foundation.cos(x * d2))
+            case "tan": x = rounds(x: Foundation.tan(x * d2))
+            case "asin": x = rounds(x: Foundation.asin(x) * d1)
+            case "acos": x = rounds(x: Foundation.acos(x) * d1)
+            case "atan": x = rounds(x: Foundation.atan(x) * d1)
             default: throw MathError.err("Unknown function: \(funcName)")
             }
         } else {
