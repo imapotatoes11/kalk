@@ -8,8 +8,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-    // TODO: !!! shrink text as number gets bigger
-    // or make it move to the right and like you swipe on the text to see the rest of the expression
+    // TODONE: !!! shrink text as number gets bigger
     
     // TODO: add ANS (equal swipe down or smth)
     // TODO: change action to press release instead of press down
@@ -25,6 +24,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var subOut: UILabel!
     @IBOutlet weak var mainOut: UILabel!
     
+    // define constants
+    let subOutMaxLines = 2
+    
     @IBOutlet weak var button1: UIButton!
     var function = false;
     
@@ -35,6 +37,11 @@ class ViewController: UIViewController {
         mainOut.layer.cornerRadius = 5
         subOut.layer.masksToBounds = true
         subOut.layer.cornerRadius = 5
+        
+        subOut.adjustsFontSizeToFitWidth = true
+        subOut.minimumScaleFactor = 0.5
+        mainOut.adjustsFontSizeToFitWidth = true
+        subOut.minimumScaleFactor = 0.5
     }
     
     // update both labels
@@ -49,10 +56,26 @@ class ViewController: UIViewController {
             // update color of 2f button
             button1.backgroundColor = UIColor(cgColor: CGColor(red: 50, green: 40, blue: 0, alpha: 1));
             button1.layer.cornerRadius = 20
-        }
-        if (!function) {
+        }; if (!function) {
             button1.backgroundColor = UIColor(cgColor: CGColor(red: 0, green: 0, blue: 0, alpha: 0))
             button1.layer.cornerRadius = 20
+        }
+        
+        // truncate by head
+        subOut.lineBreakMode = .byTruncatingHead
+        if expression.count % 20 >= 19 {
+            subOut.numberOfLines += 1
+        }
+        print("------------------------------------")
+        print("exp.count \(expression.count)")
+        print("subOut.numOfLines \(subOut.numberOfLines)")
+        print("count%20: \(expression.count % 20)")
+        
+        // undo actions if limit of 2 lines is reached
+        if expression.count % 20 >= 19 && subOut.numberOfLines > subOutMaxLines {
+            expression = String(expression.dropLast(1))
+            // re-update labels
+            updateLabels()
         }
     }
     
@@ -65,8 +88,6 @@ class ViewController: UIViewController {
     
     
     
-    
-    
     // the buttons
     @IBAction func button0AC(_ sender: Any) {
         // TODO: tap swipe down for delete char
@@ -75,7 +96,7 @@ class ViewController: UIViewController {
     }
     @IBAction func button1FUNCTION(_ sender: Any) {
         function = !function
-        print(function)
+//        print(function)
         updateLabels()
     }
     @IBAction func button2OPENBRACKET(_ sender: Any) {
