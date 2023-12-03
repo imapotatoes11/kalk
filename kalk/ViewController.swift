@@ -11,6 +11,7 @@ class ViewController: UIViewController {
     // TODONE: !!! shrink text as number gets bigger
     
     // TODO: add ANS (equal swipe down or smth)
+    // TODO: make it like add ANS if operator pressed first
     // TODO: change action to press release instead of press down
     // TODO: swipe gestures for cursor
     // TODO: add a 0 if only an operator is pressed
@@ -28,6 +29,9 @@ class ViewController: UIViewController {
     let subOutMaxLines = 2
     
     @IBOutlet weak var button1: UIButton!
+    @IBOutlet weak var button4: UIButton!
+    @IBOutlet weak var button5: UIButton!
+    @IBOutlet weak var button6: UIButton!
     var function = false;
     
     override func viewDidLoad() {
@@ -42,6 +46,11 @@ class ViewController: UIViewController {
         subOut.minimumScaleFactor = 0.5
         mainOut.adjustsFontSizeToFitWidth = true
         subOut.minimumScaleFactor = 0.5
+        
+        for i in [button4, button5, button6] {
+            i?.titleLabel?.adjustsFontSizeToFitWidth = true
+            i?.titleLabel?.minimumScaleFactor = 0.5
+        }
     }
     
     // update both labels
@@ -61,19 +70,34 @@ class ViewController: UIViewController {
             button1.layer.cornerRadius = 20
         }
         
+        // update function buttons
+        if function {
+            button4.setTitle("asin", for: button4.state)
+            button5.setTitle("acos", for: button5.state)
+            button6.setTitle("atan", for: button6.state)
+        } else {
+            button4.setTitle("sin", for: button4.state)
+            button5.setTitle("cos", for: button5.state)
+            button6.setTitle("tan", for: button6.state)
+        }
+        
+        
+        
         // truncate by head
         subOut.lineBreakMode = .byTruncatingHead
         if expression.count % 20 >= 19 {
             subOut.numberOfLines += 1
         }
-        print("------------------------------------")
-        print("exp.count \(expression.count)")
-        print("subOut.numOfLines \(subOut.numberOfLines)")
-        print("count%20: \(expression.count % 20)")
+//        print("------------------------------------")
+//        print("exp.count \(expression.count)")
+//        print("subOut.numOfLines \(subOut.numberOfLines)")
+//        print("count%20: \(expression.count % 20)")
         
         // undo actions if limit of 2 lines is reached
-        if expression.count % 20 >= 19 && subOut.numberOfLines > subOutMaxLines {
+        if /*expression.count % 20 >= 19 &&*/ subOut.numberOfLines > subOutMaxLines {
+            // TODO: multiply like shrinks it cuz kerning
             expression = String(expression.dropLast(1))
+            subOut.numberOfLines = subOutMaxLines
             // re-update labels
             updateLabels()
         }
@@ -93,94 +117,157 @@ class ViewController: UIViewController {
         // TODO: tap swipe down for delete char
         expression = ""
         updateLabels()
+        let impact = UIImpactFeedbackGenerator(style: .medium)
+        impact.impactOccurred()
     }
     @IBAction func button1FUNCTION(_ sender: Any) {
         function = !function
-//        print(function)
         updateLabels()
+        let impact = UIImpactFeedbackGenerator(style: .soft)
+        impact.impactOccurred()
     }
     @IBAction func button2OPENBRACKET(_ sender: Any) {
         expression += "("
         updateLabels()
+        let impact = UIImpactFeedbackGenerator(style: .soft)
+        impact.impactOccurred()
     }
     @IBAction func button3CLOSEBRACKET(_ sender: Any) {
         expression += ")"
         updateLabels()
+        let impact = UIImpactFeedbackGenerator(style: .soft)
+        impact.impactOccurred()
     }
     @IBAction func button4SIN(_ sender: Any) {
-        expression += "sin("
+        if !function {
+            expression += "sin("
+        } else {
+            expression += "asin("
+        }
         updateLabels()
+        let impact = UIImpactFeedbackGenerator(style: .soft)
+        impact.impactOccurred()
     }
     @IBAction func button5COS(_ sender: Any) {
-        expression += "cos("
+        if !function {
+            expression += "cos("
+        } else {
+            expression += "acos("
+        }
         updateLabels()
+        let impact = UIImpactFeedbackGenerator(style: .soft)
+        impact.impactOccurred()
     }
     @IBAction func button6TAN(_ sender: Any) {
-        expression += "tan("
+        if !function {
+            expression += "tan("
+        } else {
+            expression += "atan("
+        }
         updateLabels()
+        let impact = UIImpactFeedbackGenerator(style: .soft)
+        impact.impactOccurred()
     }
     @IBAction func button7DIVIDE(_ sender: Any) {
         expression += "/"
         updateLabels()
+        let impact = UIImpactFeedbackGenerator(style: .soft)
+        impact.impactOccurred()
     }
     @IBAction func button8SEVEN(_ sender: Any) {
         expression += "7"
         updateLabels()
+        let impact = UIImpactFeedbackGenerator(style: .soft)
+        impact.impactOccurred()
     }
     @IBAction func button9EIGHT(_ sender: Any) {
         expression += "8"
         updateLabels()
+        let impact = UIImpactFeedbackGenerator(style: .soft)
+        impact.impactOccurred()
     }
     @IBAction func button10NINE(_ sender: Any) {
         expression += "9"
         updateLabels()
+        let impact = UIImpactFeedbackGenerator(style: .soft)
+        impact.impactOccurred()
     }
     @IBAction func button11MULTIPLY(_ sender: Any) {
         expression += "*"
         updateLabels()
+        let impact = UIImpactFeedbackGenerator(style: .soft)
+        impact.impactOccurred()
     }
     @IBAction func button12FOUR(_ sender: Any) {
         expression += "4"
         updateLabels()
+        let impact = UIImpactFeedbackGenerator(style: .soft)
+        impact.impactOccurred()
     }
     @IBAction func button13FIVE(_ sender: Any) {
         expression += "5"
         updateLabels()
+        let impact = UIImpactFeedbackGenerator(style: .soft)
+        impact.impactOccurred()
     }
     @IBAction func button14SIX(_ sender: Any) {
         expression += "6"
         updateLabels()
+        let impact = UIImpactFeedbackGenerator(style: .soft)
+        impact.impactOccurred()
     }
     @IBAction func button15SUBTRACT(_ sender: Any) {
         expression += "-"
         updateLabels()
+        let impact = UIImpactFeedbackGenerator(style: .soft)
+        impact.impactOccurred()
     }
     @IBAction func button16ONE(_ sender: Any) {
         expression += "1"
         updateLabels()
+        let impact = UIImpactFeedbackGenerator(style: .soft)
+        impact.impactOccurred()
     }
     @IBAction func button17TWO(_ sender: Any) {
         expression += "2"
         updateLabels()
+        let impact = UIImpactFeedbackGenerator(style: .soft)
+        impact.impactOccurred()
     }
     @IBAction func button18THREE(_ sender: Any) {
         expression += "3"
         updateLabels()
+        let impact = UIImpactFeedbackGenerator(style: .soft)
+        impact.impactOccurred()
     }
     @IBAction func button19ADD(_ sender: Any) {
         expression += "+"
         updateLabels()
+        let impact = UIImpactFeedbackGenerator(style: .soft)
+        impact.impactOccurred()
     }
     @IBAction func button20ZERO(_ sender: Any) {
         expression += "0"
         updateLabels()
+        let impact = UIImpactFeedbackGenerator(style: .soft)
+        impact.impactOccurred()
     }
     @IBAction func button21DECIMAL(_ sender: Any) {
         expression += "."
         updateLabels()
+        let impact = UIImpactFeedbackGenerator(style: .soft)
+        impact.impactOccurred()
     }
     @IBAction func button22EQUAL(_ sender: Any) {
-        evaluate()
+        if expression != "" {
+            evaluate()
+            let impact = UIImpactFeedbackGenerator(style: .heavy)
+            impact.impactOccurred()
+        } else {
+            print("expression was empty")
+            let impact = UIImpactFeedbackGenerator(style: .rigid)
+            impact.impactOccurred()
+        }
     }
     
 

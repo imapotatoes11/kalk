@@ -312,6 +312,9 @@
                     </view>
                     <connections>
                         <outlet property="button1" destination="g6h-Do-Hsa" id="NB9-Pp-D8r"/>
+                        <outlet property="button4" destination="OBJ-8F-vL9" id="yyV-GG-J8o"/>
+                        <outlet property="button5" destination="upf-Gd-rhd" id="Dzp-M5-DDc"/>
+                        <outlet property="button6" destination="nHo-lG-uPA" id="aQu-Dl-kbb"/>
                         <outlet property="mainOut" destination="eQW-KL-nN0" id="j7L-X6-pFe"/>
                         <outlet property="subOut" destination="gdx-Yq-s9Z" id="w0C-o0-dvi"/>
                     </connections>
