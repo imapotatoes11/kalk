@@ -9,8 +9,9 @@ import UIKit
 
 class ViewController: UIViewController {
     // TODONE: !!! shrink text as number gets bigger
+    // TODO: the function buttons keep getting smaller
     
-    // TODO: rework ui/ux esp. the colors
+    // TODO: soontm rework ui/ux esp. the colors
     // TODO: add ANS (equal swipe down or smth)
     // TODO: make it like add ANS if operator pressed first
     // TODO: change action to press release instead of press down
@@ -30,10 +31,29 @@ class ViewController: UIViewController {
     // define constants
     let subOutMaxLines = 2
     
-    @IBOutlet weak var button1: UIButton!
-    @IBOutlet weak var button4: UIButton!
-    @IBOutlet weak var button5: UIButton!
-    @IBOutlet weak var button6: UIButton!
+    @IBOutlet weak var button0: UIButton!
+    @IBOutlet weak var button1: UIButton! // 2f
+    @IBOutlet weak var button2: UIButton!
+    @IBOutlet weak var button3: UIButton!
+    @IBOutlet weak var button4: UIButton! // sin
+    @IBOutlet weak var button5: UIButton! // cos
+    @IBOutlet weak var button6: UIButton! // tan
+    @IBOutlet weak var button7: UIButton!
+    @IBOutlet weak var button8: UIButton! // 7/sqrt
+    @IBOutlet weak var button9: UIButton!
+    @IBOutlet weak var button10: UIButton!
+    @IBOutlet weak var button11: UIButton!
+    @IBOutlet weak var button12: UIButton!
+    @IBOutlet weak var button13: UIButton!
+    @IBOutlet weak var button14: UIButton!
+    @IBOutlet weak var button15: UIButton!
+    @IBOutlet weak var button16: UIButton!
+    @IBOutlet weak var button17: UIButton!
+    @IBOutlet weak var button18: UIButton!
+    @IBOutlet weak var button19: UIButton!
+    @IBOutlet weak var button20: UIButton!
+    @IBOutlet weak var button21: UIButton!
+    @IBOutlet weak var button22: UIButton!
     var function = false;
     
     override func viewDidLoad() {
@@ -49,10 +69,12 @@ class ViewController: UIViewController {
         mainOut.adjustsFontSizeToFitWidth = true
         subOut.minimumScaleFactor = 0.5
         
-        for i in [button4, button5, button6] {
+        // button4, button5, button6
+        for i in [button0, button1, button2, button3, button4, button5, button6, button7, button8, button9, button10, button11, button12, button13, button14, button15, button16, button17, button18, button19, button20, button21, button22] {
             i?.titleLabel?.adjustsFontSizeToFitWidth = true
-            i?.titleLabel?.minimumScaleFactor = 0.5
+            i?.titleLabel?.minimumScaleFactor = 0
         }
+        updateLabels()
     }
     
     // update both labels
@@ -77,11 +99,13 @@ class ViewController: UIViewController {
             button4.setTitle("asin", for: button4.state)
             button5.setTitle("acos", for: button5.state)
             button6.setTitle("atan", for: button6.state)
+            button8.setTitle("√", for: button8.state)
         }
         if !function {
             button4.setTitle("sin", for: button4.state)
             button5.setTitle("cos", for: button5.state)
             button6.setTitle("tan", for: button6.state)
+            button8.setTitle("7", for: button8.state)
         }
         
         
@@ -187,7 +211,12 @@ class ViewController: UIViewController {
         impact.impactOccurred()
     }
     @IBAction func button8SEVEN(_ sender: Any) {
-        expression += "7"
+        if !function {
+            expression += "7"
+        } else {
+            expression += "sqrt("
+            function = false
+        }
         updateLabels()
         let impact = UIImpactFeedbackGenerator(style: .soft)
         impact.impactOccurred()
